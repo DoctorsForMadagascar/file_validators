@@ -17,6 +17,7 @@ module ActiveModel
 
           values.each do |value|
             content_type = get_content_type(value, mode)
+            next if content_type.nil? 
             validate_whitelist(record, attribute, content_type, allowed_types)
             validate_blacklist(record, attribute, content_type, forbidden_types)
           end
@@ -71,8 +72,12 @@ module ActiveModel
           file_name = get_file_name(value)
           MIME::Types.type_for(file_name).first
         else
-          value = OpenStruct.new(value) if value.is_a?(Hash)
-          value.content_type
+          begin
+            value = OpenStruct.new(value) if value.is_a?(Hash)
+            value.content_type
+          rescue Module::DelegationError
+            nil
+          end
         end
       end
 
