@@ -64,7 +64,7 @@ module ActiveModel
           else
             value.size
           end
-        rescue Module::NoMethodError
+        rescue Module::DelegationError
             0
         end
       end
