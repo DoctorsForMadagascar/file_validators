@@ -65,12 +65,12 @@ module ActiveModel
             value.size
           end
         rescue Module::DelegationError
-            0
+            nil
         end
       end
 
       def valid_size?(size, option, option_value)
-        return false if size.nil?
+        return true if size.nil?
         if option_value.is_a?(Range)
           option_value.send(CHECKS[option], size)
         else
