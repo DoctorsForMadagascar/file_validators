@@ -58,10 +58,14 @@ module ActiveModel
       end
 
       def value_byte_size(value)
-        if value.respond_to?(:byte_size)
-          value.byte_size
-        else
-          value.size
+        begin
+          if value.respond_to?(:byte_size)
+            value.byte_size
+          else
+            value.size
+          end
+        rescue Module::NoMethodError
+            0
         end
       end
 
